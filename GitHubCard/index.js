@@ -42,25 +42,28 @@ function UserCard(obj) {
   div.append(h3, p1, p2, p3, p4, p5, p6)
   return card
 }
+function FollowerCards(followers_url) {
+
+  axios
+    .get(followers_url)
+    .then(res => {
+      console.log("followersURL response", res)
+      let list = res.data
+      list.map(follower => UserCard(follower))
+    })
+    .catch(err => {
+      console.log("error from followersURL", err)
+    })
+}
 axios
   .get("https://api.github.com/users/natemosco")
   .then(res => {
     console.log("this is the github response", res)
     UserCard(res.data)
+    FollowerCards(res.data.followers_url)
   })
   .catch(err => {
     console.log("Error from github .get request", err)
-  })
-
-axios
-  .get("https://api.github.com/users/natemosco/followers")
-  .then(res => {
-    console.log("followersURL response", res)
-    let list = res.data
-    list.map(follower => UserCard(follower))
-  })
-  .catch(err => {
-    console.log("error from followersURL", err)
   })
 
 
